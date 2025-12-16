@@ -211,7 +211,7 @@
             5: { 
                 duration: 12 * ONE_HOUR_MS, 
                 spawnWindowMs: 30 * ONE_MINUTE_MS, 
-                // 17:15 GMT+2
+                // CORRECTED: 17:30 GMT+2
                 fixedStartTime: "2025-12-15T17:30:00+02:00"
             }
         };
@@ -278,8 +278,12 @@
                 // Phase 2: Spawn Window (Boss Up)
                 const spawnWindowRemaining = config.duration - elapsedSinceStartMs;
                 
+                // NEW LOGIC: Use 'Abuse Raid' for ID 5, otherwise use 'Boss'
+                const bossName = (id === 5) ? 'Abuse Raid' : 'Boss'; 
+                
                 displayElement.innerText = formatTime(spawnWindowRemaining);
-                messageElement.innerText = `BOSS UP RIGHT NOW! (${formatTime(spawnWindowRemaining)} LEFT)`;
+                // NEW TEXT: "Boss is Up Right Now!" or "Abuse Raid is Up Right Now!"
+                messageElement.innerText = `${bossName} is Up Right Now! (${formatTime(spawnWindowRemaining)} LEFT)`;
                 messageElement.classList.add('up');
 
             } else {
@@ -351,4 +355,3 @@
     </script>
 </body>
 </html>
-
