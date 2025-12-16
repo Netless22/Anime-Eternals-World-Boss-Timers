@@ -21,23 +21,21 @@
         }
 
         h1 { 
-            margin-bottom: 10px; /* Adjusted for closer fit to border */
+            margin-bottom: 10px;
             color: white;
             font-weight: 900; 
             transition: color 0.5s ease-in-out; 
-            /* FINAL FONT SELECTION */
             font-family: 'Rajdhani', sans-serif; 
             font-size: 2.5rem; 
         }
         
-        /* NEW: Wrapper for the white border */
         .main-content-wrapper {
             border: 2px solid white; 
             border-radius: 10px; 
-            padding: 20px 20px; /* Adjusted internal padding */
+            padding: 20px 20px;
             max-width: 1050px;
             width: 100%;
-            margin-top: 5px; /* Reduced margin above wrapper */
+            margin-top: 5px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -50,7 +48,7 @@
             gap: 20px;
             max-width: 1000px;
             width: 100%;
-            margin-top: 15px; /* Adjusted margin */
+            margin-top: 15px;
         }
 
         /* --- STYLES FOR VIRTUAL DEPTH and WHITE GLOW --- */
@@ -63,8 +61,16 @@
                 0 6px 12px rgba(0, 0, 0, 0.4),
                 0 0 15px 1px rgba(255, 255, 255, 0.4); 
             border: 1px solid #444; 
-            border-left: 5px solid #2980b9; 
-            transition: box-shadow 0.5s ease-in-out;
+            transition: all 0.3s ease-in-out; 
+        }
+        /* Hover Lift Effect - MODIFIED FOR UNIFORM GLOW */
+        .timer-card:hover {
+            transform: translateY(-5px) scale(1.01); 
+            box-shadow: 
+                /* Deep shadow for depth, slightly offset */
+                0 10px 20px rgba(0, 0, 0, 0.6), 
+                /* Centered white glow for uniformity */
+                0 0 25px 3px rgba(255, 255, 255, 0.6); 
         }
         /* ------------------------------------------- */
 
@@ -77,17 +83,25 @@
             transition: color 0.5s ease-in-out;
         }
         
-        /* Visual Fix: Tighter spacing while preventing overlap */
         .status-message {
             font-size: 1.5rem;
             font-weight: bold;
-            height: 3rem; /* Tighter fit for status message text */
+            height: 3rem; 
             color: #e74c3c; 
-            margin-bottom: 5px; /* Tighter margin below status message */
-            transition: color 0.5s ease-in-out;
+            margin-bottom: 5px;
+            transition: color 0.5s ease-in-out, transform 0.5s;
         }
+
+        /* Status Pulse Animation */
+        @keyframes status-pulse {
+            0% { transform: scale(1); text-shadow: 0 0 5px rgba(46, 204, 113, 0.4); }
+            50% { transform: scale(1.02); text-shadow: 0 0 10px rgba(46, 204, 113, 0.8); }
+            100% { transform: scale(1); text-shadow: 0 0 5px rgba(46, 204, 113, 0.4); }
+        }
+
         .status-message.up {
             color: #2ecc71; 
+            animation: status-pulse 1.5s infinite ease-in-out;
         }
 
         .time-display {
@@ -112,18 +126,15 @@
             .timer-grid { grid-template-columns: repeat(2, 1fr); }
             .main-content-wrapper { max-width: 650px; }
         }
-        /* Standard Mobile View */
         @media (max-width: 600px) {
             .timer-grid { grid-template-columns: 1fr; }
             .time-display { font-size: 3.5rem; }
             .main-content-wrapper { max-width: 95%; }
         }
-        /* Extra-Small Mobile Optimization */
         @media (max-width: 400px) {
             .time-display { 
                 font-size: 2.5rem; 
             }
-            /* Adjusted status message for very small screens */
             .status-message {
                 font-size: 1.2rem;
                 height: 3rem;
@@ -278,11 +289,10 @@
                 // Phase 2: Spawn Window (Boss Up)
                 const spawnWindowRemaining = config.duration - elapsedSinceStartMs;
                 
-                // NEW LOGIC: Use 'Abuse Raid' for ID 5, otherwise use 'Boss'
+                // Text Change Logic: Use 'Abuse Raid' for ID 5, otherwise use 'Boss'
                 const bossName = (id === 5) ? 'Abuse Raid' : 'Boss'; 
                 
                 displayElement.innerText = formatTime(spawnWindowRemaining);
-                // NEW TEXT: "Boss is Up Right Now!" or "Abuse Raid is Up Right Now!"
                 messageElement.innerText = `${bossName} is Up Right Now! (${formatTime(spawnWindowRemaining)} LEFT)`;
                 messageElement.classList.add('up');
 
