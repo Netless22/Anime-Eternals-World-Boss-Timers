@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Eternals World Bosses Timer</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* (Styling is consistent) */
+        body {
+            background-color: #000000;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 { 
+            margin-bottom: 10px; /* Adjusted for closer fit to border */
+            color: white;
+            font-weight: 900; 
+            transition: color 0.5s ease-in-out; 
+            /* FINAL FONT SELECTION */
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 2.5rem; 
+        }
+        
+        /* NEW: Wrapper for the white border */
+        .main-content-wrapper {
+            border: 2px solid white; 
+            border-radius: 10px; 
+            padding: 20px 20px; /* Adjusted internal padding */
+            max-width: 1050px;
+            width: 100%;
+            margin-top: 5px; /* Reduced margin above wrapper */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 15px; /* Adjusted margin */
+        }
+
+        /* --- STYLES FOR VIRTUAL DEPTH and WHITE GLOW --- */
+        .timer-card {
+            background-color: #333;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.4),
+                0 0 15px 1px rgba(255, 255, 255, 0.4); 
+            border: 1px solid #444; 
+            border-left: 5px solid #2980b9; 
+            transition: box-shadow 0.5s ease-in-out;
+        }
+        /* ------------------------------------------- */
+
+        .timer-title {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.5s ease-in-out;
+        }
+        
+        /* Visual Fix: Tighter spacing while preventing overlap */
+        .status-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            height: 3rem; /* Tighter fit for status message text */
+            color: #e74c3c; 
+            margin-bottom: 5px; /* Tighter margin below status message */
+            transition: color 0.5s ease-in-out;
+        }
+        .status-message.up {
+            color: #2ecc71; 
+        }
+
+        .time-display {
+            font-size: 3rem; 
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            margin: 10px 0;
+            color: #fff;
+            transition: color 0.5s ease-in-out;
+        }
+
+        @keyframes flash-red {
+            0% { background-color: #e74c3c; border-left: 5px solid #fff;}
+            50% { background-color: #333; border-left: 5px solid #e74c3c;}
+            100% { background-color: #e74c3c; border-left: 5px solid #fff;}
+        }
+        .finished {
+            animation: flash-red 0.5s 6;
+        }
+
+        @media (max-width: 1050px) {
+            .timer-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-content-wrapper { max-width: 650px; }
+        }
+        /* Standard Mobile View */
+        @media (max-width: 600px) {
+            .timer-grid { grid-template-columns: 1fr; }
+            .time-display { font-size: 3.5rem; }
+            .main-content-wrapper { max-width: 95%; }
+        }
+        /* Extra-Small Mobile Optimization */
+        @media (max-width: 400px) {
+            .time-display { 
+                font-size: 2.5rem; 
+            }
+            /* Adjusted status message for very small screens */
+            .status-message {
+                font-size: 1.2rem;
+                height: 3rem;
+            }
+            .timer-card {
+                padding: 15px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Anime Eternals World Bosses Timer</h1>
+    
+    <div class="main-content-wrapper"> 
+
+        <p style="color:#aaa;">Timers are individually synchronized based on their last confirmed spawn/kill time.</p>
+
+        <div class="timer-grid">
+            <div class="timer-card" id="card-1">
+                <div class="status-message" id="message-1"></div>
+                <div class="timer-title">World Boss 1</div>
+                <div class="time-display" id="display-1">--:--:--</div>
+            </div>
+
+            <div class="timer-card" id="card-2">
+                <div class="status-message" id="message-2"></div>
+                <div class="timer-title">World Boss 4</div>
+                <div class="time-display" id="display-2">--:--:--</div>
+            </div>
+            
+            <div class="timer-card" id="card-3">
+                <div class="status-message" id="message-3"></div>
+                <div class="timer-title">World Boss 6</div>
+                <div class="time-display" id="display-3">--:--:--</div>
+            </div>
+            
+            <div class="timer-card" id="card-4">
+                <div class="status-message" id="message-4"></div>
+                <div class="timer-title">World Boss 8</div>
+                <div class="time-display" id="display-4">--:--:--</div>
+            </div>
+            
+            <div class="timer-card" id="card-5">
+                <div class="status-message" id="message-5"></div>
+                <div class="timer-title">Abuse Raid</div>
+                <div class="time-display" id="display-5">--:--:--</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // ==============================================================================
+        // *** 1. CONFIGURATION: THESE ARE YOUR FINAL VALUES ***
+        // ==============================================================================
+
+        const ONE_MINUTE_MS = 60 * 1000;
+        const ONE_HOUR_MS = 3600000;
+        
+        // --- NOTE: ALL START TIMES ARE SHIFTED AHEAD BY 15 MINUTES (GMT+2) ---
+        const timerConfig = {
+            1: { 
+                duration: 6 * ONE_HOUR_MS, 
+                spawnWindowMs: 15 * ONE_MINUTE_MS, 
+                // 18:15 GMT+2
+                fixedStartTime: "2025-12-15T18:15:00+02:00" 
+            },
+            2: { 
+                duration: 12 * ONE_HOUR_MS, 
+                spawnWindowMs: 15 * ONE_MINUTE_MS, 
+                // 12:15 GMT+2
+                fixedStartTime: "2025-12-15T12:15:00+02:00" 
+            },
+            3: { 
+                duration: 8 * ONE_HOUR_MS, 
+                spawnWindowMs: 15 * ONE_MINUTE_MS, 
+                // 18:45 GMT+2
+                fixedStartTime: "2025-12-15T18:45:00+02:00" 
+            },
+            4: { 
+                duration: 12 * ONE_HOUR_MS, 
+                spawnWindowMs: 15 * ONE_MINUTE_MS, 
+                // 13:15 GMT+2
+                fixedStartTime: "2025-12-15T13:15:00+02:00" 
+            },
+            5: { 
+                duration: 12 * ONE_HOUR_MS, 
+                spawnWindowMs: 30 * ONE_MINUTE_MS, 
+                // 17:15 GMT+2
+                fixedStartTime: "2025-12-15T17:15:00+02:00"
+            }
+        };
+        // ==============================================================================
+
+        const timerState = {}; 
+
+        function formatTime(ms) {
+            if (ms < 0) ms = 0;
+            let totalSeconds = Math.floor(ms / 1000);
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            const s = totalSeconds % 60;
+            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // --- Persistence Helpers ---
+        function getLocalStorageKey(id) {
+            return `timer-${id}-lastCycleEnd`; 
+        }
+        function saveLastCycleEnd(id, timeMs) {
+            localStorage.setItem(getLocalStorageKey(id), timeMs);
+        }
+        
+        // --- Finish Time Calculations ---
+        function calculateFirstCycleEnd(id) {
+            const config = timerConfig[id];
+            
+            const fixedStartMs = new Date(config.fixedStartTime).getTime();
+            
+            return fixedStartMs + config.duration + (config.delayMs || 0);
+        }
+
+        function calculateNextCycleEnd(id, lastCycleEnd) {
+            return lastCycleEnd + timerConfig[id].duration;
+        }
+        
+        function calculateTimeElapsedSinceLastCycleStart(id) {
+            const lastCycleEndMs = localStorage.getItem(getLocalStorageKey(id));
+            if (!lastCycleEndMs) { return 0; }
+            
+            const lastCycleStart = parseInt(lastCycleEndMs, 10) - timerConfig[id].duration;
+            return Date.now() - lastCycleStart;
+        }
+
+        // --- Display and Lifecycle ---
+        
+        function updateDisplay(id) {
+            const config = timerConfig[id];
+            const elapsedSinceStartMs = calculateTimeElapsedSinceLastCycleStart(id); 
+            
+            const timeUntilSpawn = config.duration - config.spawnWindowMs - elapsedSinceStartMs;
+            
+            const displayElement = document.getElementById(`display-${id}`);
+            const messageElement = document.getElementById(`message-${id}`);
+            
+            if (timeUntilSpawn > 0) {
+                // Phase 1: Main Countdown (Downtime)
+                displayElement.innerText = formatTime(timeUntilSpawn);
+                messageElement.innerText = `NEXT UP: ${formatTime(timeUntilSpawn)}`;
+                messageElement.classList.remove('up');
+                
+            } else if (elapsedSinceStartMs < config.duration) {
+                // Phase 2: Spawn Window (Boss Up)
+                const spawnWindowRemaining = config.duration - elapsedSinceStartMs;
+                
+                displayElement.innerText = formatTime(spawnWindowRemaining);
+                messageElement.innerText = `BOSS UP RIGHT NOW! (${formatTime(spawnWindowRemaining)} LEFT)`;
+                messageElement.classList.add('up');
+
+            } else {
+                // Time is up! Cycle is over. Reset for the next cycle.
+                clearInterval(timerState[id]);
+                timerFinished(id, true);
+                return;
+            }
+        }
+
+        function startTimer(id) {
+            if (timerState[id]) { clearInterval(timerState[id]); }
+            
+            // Check if we need to reset overdue cycles without the animation
+            if (calculateTimeElapsedSinceLastCycleStart(id) >= timerConfig[id].duration) {
+                timerFinished(id, false); 
+            } else {
+                // If it's a normal countdown, just start the interval
+                timerState[id] = setInterval(() => updateDisplay(id), 1000);
+                updateDisplay(id); 
+            }
+        }
+        
+        function timerFinished(id, triggerAnimation) {
+            const card = document.getElementById(`card-${id}`);
+            const oldCycleEnd = parseInt(localStorage.getItem(getLocalStorageKey(id)), 10);
+            
+            if (triggerAnimation) {
+                card.classList.add('finished');
+            }
+
+            const timeoutDuration = triggerAnimation ? 3000 : 0;
+            
+            setTimeout(() => {
+                if (triggerAnimation) {
+                    card.classList.remove('finished');
+                }
+                
+                let newCycleEnd = oldCycleEnd;
+                // Catch up any cycles missed while the page was closed
+                while (newCycleEnd <= Date.now()) {
+                    newCycleEnd = calculateNextCycleEnd(id, newCycleEnd);
+                }
+                
+                saveLastCycleEnd(id, newCycleEnd); 
+                
+                if (!timerState[id]) {
+                    timerState[id] = setInterval(() => updateDisplay(id), 1000);
+                }
+                startTimer(id); 
+
+            }, timeoutDuration); 
+        }
+
+        function initializeTimers() {
+            Object.keys(timerConfig).forEach(idString => {
+                const id = parseInt(idString, 10);
+                
+                if (!localStorage.getItem(getLocalStorageKey(id))) {
+                    const firstCycleEnd = calculateFirstCycleEnd(id);
+                    saveLastCycleEnd(id, firstCycleEnd);
+                }
+                
+                startTimer(id);
+            });
+        }
+
+        window.onload = initializeTimers;
+    </script>
+</body>
+</html>
